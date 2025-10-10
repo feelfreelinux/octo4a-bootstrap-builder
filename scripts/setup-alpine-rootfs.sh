@@ -1,6 +1,7 @@
 #!/bin/sh
 # Ran as part of alpine-make-rootfs, chrooted as the bootstrap thats being built
 set -eu
+/bin/sh
 
 export PATH='/sbin:/usr/sbin:/bin:/usr/bin'
 export SHELL='/bin/sh'
@@ -49,3 +50,4 @@ gcc -shared -o /home/octoprint/ioctl-hook.so /home/octoprint/ioctlHook.o -ldl
 # switch to octoprint user
 su -s /bin/bash -c "python3 -m venv ~/octoprint-venv" octoprint
 su -s /bin/bash -c ". ~/octoprint-venv/bin/activate && cd /mnt/build/octoprint && ls -l && pip3 install ." octoprint
+apk --purge del rust cargo
