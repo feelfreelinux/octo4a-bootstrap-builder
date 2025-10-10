@@ -1,7 +1,6 @@
 #!/bin/sh
 # Ran as part of alpine-make-rootfs, chrooted as the bootstrap thats being built
 set -eu
-/bin/sh
 
 export PATH='/sbin:/usr/sbin:/bin:/usr/bin'
 export SHELL='/bin/sh'
