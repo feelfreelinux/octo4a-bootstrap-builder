@@ -1,4 +1,4 @@
-#!/usr/local/env sh
+#!/usr/bin/env sh
 
 # Supported platforms
 # Note - currently disabling pre Android 21 targets
@@ -43,7 +43,8 @@ config_ndk() {
     else
         export INSTALL_ROOT="$BUILD_DIR/root-$1/root"
         export STATIC_ROOT="$BUILD_DIR/static-$1/root"
-        export API=21
+        # API 24+: bionic provides getifaddrs/freeifaddrs needed by modern Termux proot
+        export API=24
     fi
 
     # Configure and build.

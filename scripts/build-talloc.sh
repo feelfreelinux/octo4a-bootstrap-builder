@@ -1,4 +1,4 @@
-#!/usr/local/env sh
+#!/usr/bin/env sh
 # statically builds talloc 2.4.1
 
 BUILD_DIR="$(pwd)/build"
@@ -65,7 +65,22 @@ make
 mkdir -p "$STATIC_ROOT/include"
 mkdir -p "$STATIC_ROOT/lib"
 
-ar rcs "$STATIC_ROOT/lib/libtalloc.a" bin/default/talloc*.o
+# Use NDK llvm-ar: host `ar` on macOS cannot archive Android ELF objects
+# (produces an empty .a and proot then fails to link talloc symbols).
+"$AR" rcs "$STATIC_ROOT/lib/libtalloc.a" \
+    bin/default/talloc.c.*.o \
+    bin/default/lib/replace/replace.c.*.o \
+    bin/default/lib/replace/closefrom.c.*.o \
+    bin/default/lib/replace/getifaddrs.c.*.o \
+    bin/default/lib/replace/replace.empty.c.*.o \
+    2>/dev/null || "$AR" rcs "$STATIC_ROOT/lib/libtalloc.a" bin/default/talloc*.o
+
+# Prefer the shared-build's object that contains the full talloc implementation
+if ! "$AR" t "$STATIC_ROOT/lib/libtalloc.a" | grep -q .; then
+    echo "Failed to create non-empty libtalloc.a" >&2
+    exit 1
+fi
+
 cp -f talloc.h "$STATIC_ROOT/include"
 
 cd $BUILD_DIR/..

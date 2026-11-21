@@ -1,4 +1,4 @@
-#!/usr/local/env sh
+#!/usr/bin/env sh
 # Builds a small alpine rootfs, and installs octoprint into it.
 
 set -eu
