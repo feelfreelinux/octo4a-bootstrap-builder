@@ -10,6 +10,9 @@ BASE_DIR="$PWD"
 
 export PROOT_TMP_DIR="$BASE_DIR/tmp"
 export PROOT_L2S_DIR="$BASE_DIR/bootstrap/.proot.meta"
+# Termux proot resolves loaders via these env vars (or a compile-time absolute path)
+export PROOT_LOADER="$BASE_DIR/libexec/proot/loader"
+export PROOT_LOADER_32="$BASE_DIR/libexec/proot/loader32"
 
 if [ ! -d "bootstrap" ]; then
     echo "No bootstrap detected, extracting"
